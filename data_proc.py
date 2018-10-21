@@ -55,6 +55,7 @@ def load_data(
     print(f"Observation lost after ignoring obs w/ nan attributes: {num_obs_lost / raw_num_obs * 100: .3f} %")
     print(f"Data shape after ignoring obs w/ nan attributes: {df.shape}")
 
+    assert "TARGET" in df.columns, "Oops, target not found in dataset."
     return df
 
 
