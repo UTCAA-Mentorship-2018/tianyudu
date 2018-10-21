@@ -44,7 +44,9 @@ def load_data(
         f"Data shape after column drop(threshold: {drop_threshold}): {df.shape}")
     
     # Drop specific columns.
-    # TODO: add section
+    if drop_columns != []:
+        df.drop(columns=[drop_columns], inplace=True)
+        print(f"Data shape after dropping specified columns: {df.shape}")
 
     # Drop observations with Nan attributes.
     raw_num_obs = len(df)
@@ -52,6 +54,7 @@ def load_data(
     num_obs_lost = raw_num_obs - len(df)
     print(f"Observation lost after ignoring obs w/ nan attributes: {num_obs_lost / raw_num_obs * 100: .3f} %")
     print(f"Data shape after ignoring obs w/ nan attributes: {df.shape}")
+
     return df
 
 
