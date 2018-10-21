@@ -11,3 +11,5 @@ df = load_data(
 values = df.values
 
 splited = split_data(df)
+for item in splited.keys():
+    exec(f"{item} = splited['{item}']")
