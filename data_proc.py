@@ -4,7 +4,7 @@ Data processing methods
 import numpy as np
 import pandas as pd
 import keras
-from typing import Dict
+from typing import Dict, List
 
 
 # Pre-defined constants
@@ -14,18 +14,27 @@ DROP_COLUMNS = []
 
 def load_data(
     file_dir: str,
-    drop_columns: list,
+    drop_columns: List[str],
     drop_threshold: float
 ) -> pd.DataFrame:
     """
-    file_dir:
-        the directory of application_train.csv
-    drop_columns: 
-        the columns would be dropped from the raw data
-    drop_threshold:
-        the percentage threshold of Nan value of dropping the column.
-        Note this is a very general dropping rule. In later models, I would specify a 
-        list of columns in DROP_COLUMNS.
+    This method loads data from csv to a pandas data frame.
+
+    Args:
+        file_dir:
+            the directory of target csv file.
+        drop_columns: 
+            A list of string representing column names (feature). Column names in this list would 
+            be dropped from the raw data.
+        drop_threshold:
+            (between 0 and 1)
+            If the percentage of Nan (missing/unverfied) values of one certain feature is more than the 
+            threshold value, this feature will be dropped from the raw data.
+            !Note! this is a very general dropping rule. In later models, I would specify a 
+            list of columns in DROP_COLUMNS and turn this off by setting its value to 1.
+
+    Returns:
+        A pre-processed data frame containing samples.
     """
     assert 0 <= drop_threshold <= 1, "drop_threshold should be between 0 and 1."
 
@@ -68,11 +77,18 @@ def split_data(
     """
     Spliting the entire dataset into training, testing and validation sets by given ratios.
 
-    df: the dataset (including both X and y, y is labelled as "TARGET")
-    ratio: the ratio to split dataset into training, testing and validation sets.
-    shuffle: if shuffle the dataset before spliting.
+    Args:
+        df: 
+            the dataset (including both X and y, y is labelled as "TARGET")
+        ratio: 
+            the ratio to split dataset into training, testing and validation sets.
+        shuffle: 
+            if shuffle the dataset before spliting.
     
-
+    Returns:
+        A dictionary of DataFrames with keys
+        X_train, y_train, X_test, y_test, X_val, y_val
+        and values are the corresponding DataFrame.
     """
     assert np.sum(list(ratio.values())) == 1, "Spliting ratios should sum up to 1"
     if shuffle:
