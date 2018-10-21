@@ -4,6 +4,7 @@ Data processing methods
 import numpy as np
 import pandas as pd
 import keras
+from typing import Tuple
 
 
 # Pre-defined constants
@@ -59,3 +60,11 @@ def load_data(
     return df
 
 
+def split_data(
+    df: pd.DataFrame
+) -> Tuple[pd.DataFrame]:
+    """
+    Spliting the entire dataset 
+
+    df: the dataset (including both X and y, y is labelled as "TARGET")
+    """
