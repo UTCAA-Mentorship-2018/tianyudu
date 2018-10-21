@@ -9,3 +9,5 @@ df = load_data(
     drop_columns=DROP_COLUMNS)
 
 values = df.values
+
+splited = split_data(df)

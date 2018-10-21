@@ -4,7 +4,7 @@ Data processing methods
 import numpy as np
 import pandas as pd
 import keras
-from typing import Tuple
+from typing import Dict
 
 
 # Pre-defined constants
@@ -61,10 +61,62 @@ def load_data(
 
 
 def split_data(
-    df: pd.DataFrame
-) -> Tuple[pd.DataFrame]:
+    df: pd.DataFrame,
+    ratio: dict={"train": 0.6, "test": 0.2, "validation": 0.2},
+    shuffle=True
+) -> Dict[str, pd.DataFrame]:
     """
-    Spliting the entire dataset 
+    Spliting the entire dataset into training, testing and validation sets by given ratios.
 
     df: the dataset (including both X and y, y is labelled as "TARGET")
+    ratio: the ratio to split dataset into training, testing and validation sets.
+    shuffle: if shuffle the dataset before spliting.
+    
+
     """
+    assert np.sum(list(ratio.values())) == 1, "Spliting ratios should sum up to 1"
+    if shuffle:
+        df = df.sample(frac=1)
+    
+    y = df["TARGET"]
+    X = df.drop(columns=["TARGET"])
+    print(f"Raw dataset shape: X={X.shape}, y={y.shape}")
+    assert len(X) == len(y)
+
+    num_obs = len(X)
+    num_train = int(num_obs * ratio["train"])
+    num_test = int(num_obs * ratio["test"])
+    num_val = int(num_obs * ratio["validation"])
+    
+    X_train = X[:num_train]
+    y_train = y[:num_train]
+
+    X_test = X[num_train: num_train + num_test]
+    y_test = y[num_train: num_train + num_test]
+
+    X_val = X[num_train + num_test:]
+    y_val = y[num_train + num_test:]
+
+    assert len(X_train) + len(X_test) + len(X_val) == num_obs
+    assert len(y_train) + len(y_test) + len(y_val) == num_obs
+
+    print(f"""Train/Test/Validation Spliting Summary
+    Shuffle: {shuffle}
+    Training set:
+        X_train: {X_train.shape}
+        y_train: {y_train.shape}
+    Testing set:
+        X_test: {X_test.shape}
+        y_test: {y_test.shape}
+    Validation set:
+        X_val: {X_val.shape}
+        y_val: {y_val.shape}
+    """)
+
+    return {
+        "X_train": X_train, "y_train": y_train,
+        "X_test": X_test, "y_test": y_test,
+        "X_val": X_val, "y_val": y_val
+    }
+
+
