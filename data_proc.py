@@ -140,7 +140,7 @@ def split_data(
 
 
 def int_encode_data(
-    df: pd.DataFrame
+    src: pd.DataFrame
 ):
     """
     Integer Encoding.
@@ -149,8 +149,8 @@ def int_encode_data(
     would be loaded as "object" type while other features would be in
     int64 or float 64.
     Args:
-        df:
-            the data frame to be encoded.
+        src:
+            the source data frame to be encoded.
 
     Returns:
         df:
@@ -159,6 +159,7 @@ def int_encode_data(
             A dictionary with column names as keys and encoders as values
             Only columns processed in this method would be included in
     """
+    df = src.copy()
     print(f"Types in dataframe received:\
     {set([str(df[col].dtypes) for col in df.columns])}")
 
