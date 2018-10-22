@@ -10,6 +10,8 @@ df = load_data(
 
 values = df.values
 
+e, encoders = int_encode_data(df)
+
 splited = split_data(df)
 for item in splited.keys():
     exec(f"{item} = splited['{item}']")

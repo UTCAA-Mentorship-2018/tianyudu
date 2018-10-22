@@ -1,10 +1,13 @@
 """
-Data processing methods
+Data processing methods as placed in this script.
 """
+
 import numpy as np
 import pandas as pd
 import keras
 from typing import Dict, List
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
 
 
 # Pre-defined constants
@@ -136,7 +139,47 @@ def split_data(
     }
 
 
-def encode_data(
+def int_encode_data(
     df: pd.DataFrame
 ):
-    pass
+    """
+    Integer Encoding.
+    Encode categorical data in the given data frame. 
+    Note that in for the application_train.csv file, categorical features
+    would be loaded as "object" type while other features would be in
+    int64 or float 64.
+    Args:
+        df:
+            the data frame to be encoded.
+
+    Returns:
+        df:
+            the dataframe with categorical features encoded.
+        encoders:
+            A dictionary with column names as keys and encoders as values
+            Only columns processed in this method would be included in
+    """
+    print(f"Types in dataframe received:\
+    {set([str(df[col].dtypes) for col in df.columns])}")
+
+    total = sum(np.array([str(df[col].dtypes) for col in df.columns]) == "object")
+    print(f"Feature with dtype: object ({total}) will be encoded.")
+
+    encoders = dict()
+    for col in df.columns:
+        if str(df[col].dtypes) == "object":
+            print(f"\tEncoding {col}")
+            target = df[col]
+            # Fit and transform.
+            encoder = LabelEncoder()
+            encoder.fit(target)
+            encoded_target = encoder.transform(target)
+            # Apply the change to data frame and save the encoder.
+            df[col] = encoded_target
+            encoders[col] = encoder
+
+    return df, encoders
+
+
+def standardize_data():
+    raise NotImplementedError
