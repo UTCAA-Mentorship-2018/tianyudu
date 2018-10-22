@@ -182,5 +182,9 @@ def int_encode_data(
     return df, encoders
 
 
-def standardize_data():
-    raise NotImplementedError
+def standardize_data(
+    df: pd.DataFrame
+):
+    """
+    Standardize dataset
+    """
