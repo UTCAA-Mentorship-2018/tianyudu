@@ -16,8 +16,10 @@ e, encoders = int_encode_data(df)
 num_fea = df.shape[1] - 1
 
 splited = split_data(e)
+scaled_splited, X_scaler, y_scaler = standardize_data(splited)
+
 for item in splited.keys():
-    exec(f"{item} = splited['{item}']")
+    exec(f"{item} = scaled_splited['{item}']")
     exec(f"print({item}.shape)")
 
 model = BaselineNN(input_dim=num_fea)
@@ -25,11 +27,11 @@ model = BaselineNN(input_dim=num_fea)
 keras.utils.print_summary(model.model)
 
 model.fit(
-    X_train.values,
-    y_train.values,
-    X_val.values,
-    y_val.values,
-    epochs=100
+    X_train,
+    y_train,
+    X_val,
+    y_val,
+    epochs=5
 )
 
 pred = model.model.predict(

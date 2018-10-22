@@ -183,8 +183,30 @@ def int_encode_data(
 
 
 def standardize_data(
-    df: pd.DataFrame
-):
+    splited: Dict[str, pd.DataFrame]
+) -> (dict, StandardScaler, StandardScaler):
     """
-    Standardize dataset
+    Standardize dataset.
+
+    Args:
+
+    Returns:
+
     """
+    scaled_set = dict()
+
+    X_scaler = StandardScaler()
+    y_scaler = StandardScaler()
+    
+    X_scaler.fit(splited["X_train"].values)
+    y_scaler.fit(splited["y_train"].values.reshape(-1, 1))
+
+    scaled_set["X_train"] = X_scaler.transform(splited["X_train"].values)
+    scaled_set["X_test"] = X_scaler.transform(splited["X_test"].values)
+    scaled_set["X_val"] = X_scaler.transform(splited["X_val"].values)
+
+    scaled_set["y_train"] = y_scaler.transform(splited["y_train"].values.reshape(-1, 1))
+    scaled_set["y_test"] = y_scaler.transform(splited["y_test"].values.reshape(-1, 1))
+    scaled_set["y_val"] = y_scaler.transform(splited["y_val"].values.reshape(-1, 1))
+
+    return scaled_set, X_scaler, y_scaler
