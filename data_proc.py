@@ -136,3 +136,7 @@ def split_data(
     }
 
 
+def encode_data(
+    df: pd.DataFrame
+):
+    pass
