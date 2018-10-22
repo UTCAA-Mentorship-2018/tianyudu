@@ -3,6 +3,8 @@ debug file.
 """
 from data_proc import *
 from baseline_nn import BaselineNN
+import matplotlib
+import matplotlib.pyplot as plt
 
 df = load_data(
     file_dir=FILE_DIR,
@@ -26,14 +28,18 @@ model = BaselineNN(input_dim=num_fea)
 
 keras.utils.print_summary(model.model)
 
+# Pass the scaled dataset into the model.
 model.fit(
     X_train,
-    y_train,
+    y_scaler.inverse_transform(y_train),
     X_val,
-    y_val,
-    epochs=5
+    y_scaler.inverse_transform(y_val),
+    epochs=25
 )
 
 pred = model.model.predict(
-    x=X_test
+    x=X_test,
+    verbose=1
 )
+
+actual = y_scaler.inverse_transform(y_test)

@@ -47,7 +47,14 @@ class BaselineNN():
             input_dim=input_dim,
             kernel_initializer='normal',
             activation='relu')
-        )    
+        )
+        
+        model.add(keras.layers.Dense(
+            units=32,
+            kernel_initializer="normal",
+            activation="sigmoid"
+        ))
+
         model.add(keras.layers.Dense(
             units=1,
             kernel_initializer='normal',
