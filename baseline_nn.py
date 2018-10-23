@@ -63,7 +63,7 @@ class BaselineNN():
         # Compile model
         model.compile(
             loss="binary_crossentropy",
-            optimizer="rmsprop",
+            optimizer="adam",
             metrics=["accuracy"]
         )
 

@@ -34,7 +34,7 @@ model.fit(
     y_scaler.inverse_transform(y_train),
     X_val,
     y_scaler.inverse_transform(y_val),
-    epochs=25
+    epochs=100
 )
 
 pred = model.model.predict(
