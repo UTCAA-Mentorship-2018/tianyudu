@@ -54,12 +54,8 @@ def load_data(
         print(f"Data shape after dropping specified columns: {df.shape}")
 
     # Drop observations with Nan attributes.
-    raw_num_obs = len(df)
-    df.dropna(inplace=True)
-    num_obs_lost = raw_num_obs - len(df)
-    print(f"Observation lost after ignoring obs w/ nan attributes: {num_obs_lost / raw_num_obs * 100: .3f} %")
-    print(f"Data shape after ignoring obs w/ nan attributes: {df.shape}")
-
+    df = drop_na_obs(df)
+    
     assert "TARGET" in df.columns, "Oops, target not found in dataset."
     return df
 
@@ -85,10 +81,16 @@ def drop_na_obs(
     raw: pd.DataFrame
 ) -> pd.DataFrame:
     df = raw.copy(deep=True)
-    
+
     original_num_obs = len(df)
     df.dropna(inplace=True)
     num_obs_lost = raw_num_obs - len(df)
+
+    print(
+        f"Observation lost after ignoring obs w/ nan attributes: {num_obs_lost / raw_num_obs * 100: .3f} %")
+    print(f"Data shape after ignoring obs w/ nan attributes: {df.shape}")
+
+    return df
 
 
 
