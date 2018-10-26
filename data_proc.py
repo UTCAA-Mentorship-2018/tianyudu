@@ -39,7 +39,6 @@ def load_data(
     Returns:
         A pre-processed data frame containing samples.
     """
-    assert 0 <= drop_threshold <= 1, "drop_threshold should be between 0 and 1."
 
     # Load raw data from csv.
     print("Loading dataset from local file...")
@@ -47,15 +46,8 @@ def load_data(
     print(f"Raw data shape: {df.shape}")
 
     # Drop columns with too many Nan values.
-    for col in df.columns:
-        nan_array = pd.isna(df[col])
-        nan_array = nan_array.astype(np.int).values
-        nan_ratio = sum(nan_array) / len(nan_array)
-        if nan_ratio > drop_threshold:
-            df.drop(columns=[col], inplace=True)
-    print(
-        f"Data shape after column drop(threshold: {drop_threshold}): {df.shape}")
-    
+    df = drop_by_na_percent(df, drop_threshold)
+
     # Drop specific columns.
     if drop_columns != []:
         df.drop(columns=[drop_columns], inplace=True)
@@ -70,6 +62,34 @@ def load_data(
 
     assert "TARGET" in df.columns, "Oops, target not found in dataset."
     return df
+
+
+def drop_by_na_percent(
+    raw: pd.DataFrame,
+    threshold: float
+) -> pd.DataFrame:
+    assert 0 <= drop_threshold <= 1, "drop_threshold should be between 0 and 1."
+    df = raw.copy(deep=True)
+
+    for col in df.columns:
+        nan_array = pd.isna(df[col])
+        nan_array = nan_array.astype(np.int).values
+        nan_ratio = sum(nan_array) / len(nan_array)
+        if nan_ratio > drop_threshold:
+            df.drop(columns=[col], inplace=True)
+    print(
+        f"Data shape after column drop(threshold: {drop_threshold}): {df.shape}")
+    return df
+
+def drop_na_obs(
+    raw: pd.DataFrame
+) -> pd.DataFrame:
+    df = raw.copy(deep=True)
+    
+    original_num_obs = len(df)
+    df.dropna(inplace=True)
+    num_obs_lost = raw_num_obs - len(df)
+
 
 
 def split_data(

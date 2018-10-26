@@ -12,8 +12,8 @@ class BaseModel():
     The basic model object.
     #TODO: write doc.
     """
-    def __init__(self):
-        raise NotImplementedError
+    def __init__(self) -> None:
+        raise NotImplementedError("Must NOT call BaseModel directly.")
 
     def save_model(
             self,
