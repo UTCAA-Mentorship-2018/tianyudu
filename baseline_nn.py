@@ -4,14 +4,16 @@ Basic Neural Net
 import keras
 import pandas as pd
 import numpy as np
+from base_model import BaseModel
 
-class BaselineNN():
+class BaselineNN(BaseModel):
     def __init__(
         self,
         input_dim: int
     ) -> None:
+        self.hist = None
         self.num_fea = input_dim
-        self.model = self.build_model(self.num_fea)
+        self.core = self.build_model(self.num_fea)
     
     def fit(
         self,
@@ -28,7 +30,7 @@ class BaselineNN():
         assert X_train.shape[1] == X_val.shape[1] == self.num_fea,\
         f"Number of features(columns) in training and validation set should be   "
 
-        self.hist = self.model.fit(
+        self.hist = self.core.fit(
             x=X_train,
             y=y_train,
             epochs=epochs,
