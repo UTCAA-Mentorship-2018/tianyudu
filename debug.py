@@ -17,7 +17,7 @@ e, encoders = int_encode_data(df)
 
 num_fea = df.shape[1] - 1
 
-splited = split_data(e)
+splited = split_data(e, target_col="TARGET")
 scaled_splited, X_scaler, y_scaler = standardize_data(splited)
 
 for item in splited.keys():

@@ -11,9 +11,11 @@ from sklearn.preprocessing import StandardScaler
 
 
 # Pre-defined constants
+# For quick debuging.
 FILE_DIR = "/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/data/application_train.csv"
 DROP_THRESHOLD = 0.1
 DROP_COLUMNS = []
+
 
 def load_data(
     file_dir: str,
@@ -55,7 +57,7 @@ def load_data(
 
     # Drop observations with Nan attributes.
     df = drop_na_obs(df)
-    
+
     assert "TARGET" in df.columns, "Oops, target not found in dataset."
     return df
 
@@ -64,18 +66,20 @@ def drop_by_na_percent(
     raw: pd.DataFrame,
     threshold: float
 ) -> pd.DataFrame:
-    assert 0 <= drop_threshold <= 1, "drop_threshold should be between 0 and 1."
+    assert 0 <= threshold <= 1, "threshold should be between 0 and 1."
     df = raw.copy(deep=True)
 
     for col in df.columns:
         nan_array = pd.isna(df[col])
         nan_array = nan_array.astype(np.int).values
         nan_ratio = sum(nan_array) / len(nan_array)
-        if nan_ratio > drop_threshold:
+        if nan_ratio > threshold:
             df.drop(columns=[col], inplace=True)
     print(
-        f"Data shape after column drop(threshold: {drop_threshold}): {df.shape}")
+        f"Data shape after column drop(threshold: {threshold}): {df.shape}\n\
+        num of features left {df.shape[1]}")
     return df
+
 
 def drop_na_obs(
     raw: pd.DataFrame
@@ -84,18 +88,18 @@ def drop_na_obs(
 
     original_num_obs = len(df)
     df.dropna(inplace=True)
-    num_obs_lost = raw_num_obs - len(df)
+    num_obs_lost = original_num_obs - len(df)
 
     print(
-        f"Observation lost after ignoring obs w/ nan attributes: {num_obs_lost / raw_num_obs * 100: .3f} %")
+        f"Observation lost after ignoring obs w/ nan attributes: {num_obs_lost / original_num_obs * 100: .3f} %")
     print(f"Data shape after ignoring obs w/ nan attributes: {df.shape}")
 
     return df
 
 
-
 def split_data(
     df: pd.DataFrame,
+    taget_col: str="TARGET",
     ratio: dict={"train": 0.6, "test": 0.2, "validation": 0.2},
     shuffle=True
 ) -> Dict[str, pd.DataFrame]:
@@ -105,22 +109,25 @@ def split_data(
     Args:
         df: 
             the dataset (including both X and y, y is labelled as "TARGET")
+        target_col:
+            column name of target/label in the dataset.
         ratio: 
             the ratio to split dataset into training, testing and validation sets.
         shuffle: 
             if shuffle the dataset before spliting.
-    
+
     Returns:
         A dictionary of DataFrames with keys
         X_train, y_train, X_test, y_test, X_val, y_val
         and values are the corresponding DataFrame.
     """
-    assert np.sum(list(ratio.values())) == 1, "Spliting ratios should sum up to 1"
+    assert np.sum(list(ratio.values())
+                  ) == 1, "Spliting ratios should sum up to 1"
     if shuffle:
         df = df.sample(frac=1)
-    
-    y = df["TARGET"]
-    X = df.drop(columns=["TARGET"])
+
+    y = df[taget_col]
+    X = df.drop(columns=[taget_col])
     print(f"Raw dataset shape: X={X.shape}, y={y.shape}")
     assert len(X) == len(y)
 
@@ -128,7 +135,7 @@ def split_data(
     num_train = int(num_obs * ratio["train"])
     num_test = int(num_obs * ratio["test"])
     num_val = int(num_obs * ratio["validation"])
-    
+
     X_train = X[:num_train]
     y_train = y[:num_train]
 
@@ -185,7 +192,8 @@ def int_encode_data(
     print(f"Types in dataframe received:\
     {set([str(df[col].dtypes) for col in df.columns])}")
 
-    total = sum(np.array([str(df[col].dtypes) for col in df.columns]) == "object")
+    total = sum(np.array([str(df[col].dtypes)
+                          for col in df.columns]) == "object")
     print(f"Feature with dtype: object ({total}) will be encoded.")
 
     encoders = dict()
@@ -219,7 +227,7 @@ def standardize_data(
 
     X_scaler = StandardScaler()
     y_scaler = StandardScaler()
-    
+
     X_scaler.fit(splited["X_train"].values)
     y_scaler.fit(splited["y_train"].values.reshape(-1, 1))
 
@@ -227,8 +235,11 @@ def standardize_data(
     scaled_set["X_test"] = X_scaler.transform(splited["X_test"].values)
     scaled_set["X_val"] = X_scaler.transform(splited["X_val"].values)
 
-    scaled_set["y_train"] = y_scaler.transform(splited["y_train"].values.reshape(-1, 1))
-    scaled_set["y_test"] = y_scaler.transform(splited["y_test"].values.reshape(-1, 1))
-    scaled_set["y_val"] = y_scaler.transform(splited["y_val"].values.reshape(-1, 1))
+    scaled_set["y_train"] = y_scaler.transform(
+        splited["y_train"].values.reshape(-1, 1))
+    scaled_set["y_test"] = y_scaler.transform(
+        splited["y_test"].values.reshape(-1, 1))
+    scaled_set["y_val"] = y_scaler.transform(
+        splited["y_val"].values.reshape(-1, 1))
 
     return scaled_set, X_scaler, y_scaler
