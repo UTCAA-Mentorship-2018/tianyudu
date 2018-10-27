@@ -1,14 +1,16 @@
 """
 debug file.
 """
-from data_proc import *
-from baseline_nn import BaselineNN
+from core.data.data_proc import *
+from core.models.baseline_nn import BaselineNN
 import matplotlib
 import matplotlib.pyplot as plt
-
+from core.tools.rec_visualize import visualize_roc
 
 # ======== CONSTANTS ========
-FILE_DIR = "/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/data/application_train.csv"
+FILE_DIR_1 = "/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/data/application_train.csv"
+FILE_DIR_2 = "/Volumes/Intel/Data/UTCAA-Mentorship-2018/application_train.csv"
+
 DROP_THRESHOLD = 0.1
 DROP_COLUMNS = []
 

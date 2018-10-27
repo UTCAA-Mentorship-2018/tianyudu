@@ -4,7 +4,7 @@ Basic Neural Net
 import keras
 import pandas as pd
 import numpy as np
-from base_model import BaseModel
+from core.models.base_model import BaseModel
 
 class BaselineNN(BaseModel):
     def __init__(

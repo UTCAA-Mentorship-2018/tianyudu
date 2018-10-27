@@ -4,7 +4,6 @@ Data processing methods as placed in this script.
 
 import numpy as np
 import pandas as pd
-import keras
 from typing import Dict, List
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
