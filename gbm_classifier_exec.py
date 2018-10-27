@@ -10,12 +10,16 @@ from sklearn import metrics
 from core.data.data_proc import *
 from core.models.baseline_nn import BaselineNN
 from constants import *
+from ui_control import *
 
 DROP_THRESHOLD = 0.1
 DROP_COLUMNS = []
 
+FILE_DIR = choose_dataset(SAVED_FILE_DIRS)
+
+
 df = load_data(
-    file_dir=FILE_DIR_MAC,
+    file_dir=FILE_DIR,
     drop_threshold=DROP_THRESHOLD,
     drop_columns=DROP_COLUMNS)
 
