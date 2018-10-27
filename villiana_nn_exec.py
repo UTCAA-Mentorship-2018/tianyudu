@@ -14,10 +14,20 @@ DROP_COLUMNS = []
 
 EXPERIMENT_NAME = input("experiment name >>> ")
 
+print(""" Avaiable dataset location: 
+[A] FILE_DIR_MAC = "/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/data/application_train.csv"
+[B] FILE_DIR_DRIVE = "/Volumes/Intel/Data/UTCAA-Mentorship-2018/application_train.csv"
+[C] FILE_DIR_EC2 = "/mentor_2018/data/application_train.csv"
+[D] FILE_DIR_CLOUD = ""
+[Z] Customize
+""")
+dataset_selection = input("Where is the dataset? >>> ")
+
+
 # ======== END ========
 
 df = load_data(
-    file_dir=FILE_DIR_MAC,
+    file_dir=FILE_DIR,
     drop_threshold=DROP_THRESHOLD,
     drop_columns=DROP_COLUMNS)
 
