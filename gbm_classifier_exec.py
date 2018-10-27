@@ -7,6 +7,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import sklearn
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn import metrics
 
 FILE_DIR = "/Volumes/Intel/Data/UTCAA-Mentorship-2018/application_train.csv"
 DROP_THRESHOLD = 0.1
@@ -32,6 +33,8 @@ for item in splited.keys():
 
 
 classifier = GradientBoostingClassifier(
+    learning_rate=0.3,
+    n_estimators=300,
     verbose=1
 )
 
@@ -40,5 +43,31 @@ classifier.fit(
     y=splited["y_train"]
 )
 
-pred_test = classifier.predict(scaled_splited["X_test"])
 pred_prob = classifier.predict_proba(scaled_splited["X_test"])
+
+# ==== Remove ====
+
+fpr, tpr, thresholds = metrics.roc_curve(
+    splited["y_test"],
+    pred_prob[:, 0]
+)
+
+# fpr, tpr, thresholds = metrics.roc_curve(
+#     splited["y_test"],
+#     pred
+# )
+
+roc_auc = metrics.auc(fpr, tpr)
+
+plt.figure()
+lw = 2
+plt.plot(
+    fpr, tpr, color="darkorange", lw=lw, label=f"ROC Curve (area = {roc_auc: 0.2f})")
+plt.plot([0, 1], [0, 1], color="navy", lw=lw, linestyle="--")
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.0])
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.title('Receiver operating characteristic example')
+plt.legend(loc="lower right")
+plt.show()

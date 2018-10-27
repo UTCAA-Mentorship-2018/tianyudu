@@ -37,15 +37,15 @@ keras.utils.print_summary(model.model)
 
 # Pass the scaled dataset into the model.
 model.fit(
-    X_train,
-    y_scaler.inverse_transform(y_train),
-    X_val,
-    y_scaler.inverse_transform(y_val),
+    scaled_splited["X_train"],
+    splited["y_train"],
+    scaled_splited["X_val"],
+    splited["y_val"],
     epochs=100
 )
 
-pred = model.model.predict(
-    x=X_test,
+pred = model.core.predict(
+    x=scaled_splited["X_test"],
     verbose=1
 )
 
