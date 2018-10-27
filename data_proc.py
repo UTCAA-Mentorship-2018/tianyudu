@@ -10,13 +10,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 
 
-# Pre-defined constants
-# For quick debuging.
-FILE_DIR = "/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/data/application_train.csv"
-DROP_THRESHOLD = 0.1
-DROP_COLUMNS = []
-
-
 def load_data(
     file_dir: str,
     drop_columns: List[str],
@@ -99,7 +92,7 @@ def drop_na_obs(
 
 def split_data(
     df: pd.DataFrame,
-    taget_col: str="TARGET",
+    target_col: str="TARGET",
     ratio: dict={"train": 0.6, "test": 0.2, "validation": 0.2},
     shuffle=True
 ) -> Dict[str, pd.DataFrame]:
@@ -126,8 +119,8 @@ def split_data(
     if shuffle:
         df = df.sample(frac=1)
 
-    y = df[taget_col]
-    X = df.drop(columns=[taget_col])
+    y = df[target_col]
+    X = df.drop(columns=[target_col])
     print(f"Raw dataset shape: X={X.shape}, y={y.shape}")
     assert len(X) == len(y)
 
