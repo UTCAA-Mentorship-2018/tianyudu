@@ -24,6 +24,11 @@ for item in splited.keys():
     exec(f"{item} = scaled_splited['{item}']")
     exec(f"print({item}.shape)")
 
+# ======== GBM classifier ========
+
+
+
+# ======== Neural Net ========
 model = BaselineNN(input_dim=num_fea)
 
 keras.utils.print_summary(model.model)
