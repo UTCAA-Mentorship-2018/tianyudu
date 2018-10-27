@@ -3,8 +3,6 @@ debug file.
 """
 from core.data.data_proc import *
 from core.models.baseline_nn import BaselineNN
-import matplotlib
-import matplotlib.pyplot as plt
 from core.tools.roc_visualize import visualize_roc
 import keras
 
@@ -15,12 +13,14 @@ FILE_DIR_2 = "/Volumes/Intel/Data/UTCAA-Mentorship-2018/application_train.csv"
 DROP_THRESHOLD = 0.1
 DROP_COLUMNS = []
 
+EXPERIMENT_NAME = input("experiment name >>> ")
+
+# ======== END ========
+
 df = load_data(
     file_dir=FILE_DIR_1,
     drop_threshold=DROP_THRESHOLD,
     drop_columns=DROP_COLUMNS)
-
-values = df.values
 
 e, encoders = int_encode_data(df)
 
@@ -48,9 +48,11 @@ pred = model.core.predict(
     verbose=1
 )
 
+model.save_model(file_dir=EXPERIMENT_NAME)
+
 visualize_roc(
     actual=splited["y_test"],
     pred_prob=pred,
-    save_dir="./sample.html",
-    show=True
+    save_dir=f"./saved_models/{EXPERIMENT_NAME}/roc.html",
+    show=False
 )
