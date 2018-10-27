@@ -6,6 +6,8 @@ from core.models.baseline_nn import BaselineNN
 from core.tools.roc_visualize import visualize_roc
 import keras
 from constants import *
+from pprint import pprint
+from ui_control import *
 
 # ======== CONSTANTS ========
 
@@ -14,15 +16,7 @@ DROP_COLUMNS = []
 
 EXPERIMENT_NAME = input("experiment name >>> ")
 
-print(""" Avaiable dataset location: 
-[A] FILE_DIR_MAC = "/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/data/application_train.csv"
-[B] FILE_DIR_DRIVE = "/Volumes/Intel/Data/UTCAA-Mentorship-2018/application_train.csv"
-[C] FILE_DIR_EC2 = "/mentor_2018/data/application_train.csv"
-[D] FILE_DIR_CLOUD = ""
-[Z] Customize
-""")
-dataset_selection = input("Where is the dataset? >>> ")
-
+FILE_DIR = choose_dataset(SAVED_FILE_DIRS)
 
 # ======== END ========
 
