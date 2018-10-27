@@ -31,6 +31,11 @@ def visualize_roc(
         y_range=(0.0, 1.0)
     )
 
+    bokeh.io.output_file(
+        filename=save_dir,
+        title="Receiver operating characteristic"
+    )
+
     p.line(
         fpr,tpr,
         color="red",

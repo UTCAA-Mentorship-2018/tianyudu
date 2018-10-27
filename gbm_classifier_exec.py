@@ -9,15 +9,13 @@ from sklearn import metrics
 
 from core.data.data_proc import *
 from core.models.baseline_nn import BaselineNN
-
-FILE_DIR_1 = "/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/data/application_train.csv"
-FILE_DIR_2 = "/Volumes/Intel/Data/UTCAA-Mentorship-2018/application_train.csv"
+from constants import *
 
 DROP_THRESHOLD = 0.1
 DROP_COLUMNS = []
 
 df = load_data(
-    file_dir=FILE_DIR_1,
+    file_dir=FILE_DIR_MAC,
     drop_threshold=DROP_THRESHOLD,
     drop_columns=DROP_COLUMNS)
 

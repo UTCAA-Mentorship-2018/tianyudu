@@ -45,17 +45,17 @@ class BaselineNN(BaseModel):
         # create model
         model = keras.Sequential()
         model.add(keras.layers.Dense(
-            units=64,
+            units=128,
             input_dim=input_dim,
             kernel_initializer='normal',
             activation='relu')
         )
         
-        model.add(keras.layers.Dense(
-            units=32,
-            kernel_initializer="normal",
-            activation="sigmoid"
-        ))
+        # model.add(keras.layers.Dense(
+        #     units=32,
+        #     kernel_initializer="normal",
+        #     activation="sigmoid"
+        # ))
 
         model.add(keras.layers.Dense(
             units=1,
