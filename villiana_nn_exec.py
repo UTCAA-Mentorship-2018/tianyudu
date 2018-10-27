@@ -18,6 +18,8 @@ EXPERIMENT_NAME = input("experiment name >>> ")
 
 FILE_DIR = choose_dataset(SAVED_FILE_DIRS)
 
+EPOCHS = int(input("Model training epochs >>> "))
+
 # ======== END ========
 
 df = load_data(
@@ -43,7 +45,7 @@ model.fit(
     splited["y_train"],
     scaled_splited["X_val"],
     splited["y_val"],
-    epochs=3
+    epochs=EPOCHS
 )
 
 pred = model.core.predict(
