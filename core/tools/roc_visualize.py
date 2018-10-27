@@ -2,7 +2,7 @@
 Methods in this file visualize the metrics to evaluate model
 using AUC of ROC.
 """
-from data_proc import *
+from core.data.data_proc import *
 import numpy as np
 import sklearn
 from sklearn import metrics
@@ -10,7 +10,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 import bokeh
 
-fpr, tpr, thresholds = metrics.roc_curve()
 
 def visualize_roc(
     actual: np.ndarray,

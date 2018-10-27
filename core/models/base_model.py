@@ -5,6 +5,7 @@ import keras
 import numpy as np
 import pandas as pd
 import datetime
+import os
 
 
 class BaseModel():
@@ -12,6 +13,7 @@ class BaseModel():
     The basic model object.
     #TODO: write doc.
     """
+
     def __init__(self) -> None:
         raise NotImplementedError("Must NOT call BaseModel directly.")
 

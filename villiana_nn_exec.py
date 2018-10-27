@@ -5,7 +5,8 @@ from core.data.data_proc import *
 from core.models.baseline_nn import BaselineNN
 import matplotlib
 import matplotlib.pyplot as plt
-from core.tools.rec_visualize import visualize_roc
+from core.tools.roc_visualize import visualize_roc
+import keras
 
 # ======== CONSTANTS ========
 FILE_DIR_1 = "/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/data/application_train.csv"
@@ -15,7 +16,7 @@ DROP_THRESHOLD = 0.1
 DROP_COLUMNS = []
 
 df = load_data(
-    file_dir=FILE_DIR,
+    file_dir=FILE_DIR_1,
     drop_threshold=DROP_THRESHOLD,
     drop_columns=DROP_COLUMNS)
 
@@ -28,14 +29,10 @@ num_fea = df.shape[1] - 1
 splited = split_data(e, target_col="TARGET")
 scaled_splited, X_scaler, y_scaler = standardize_data(splited)
 
-for item in splited.keys():
-    exec(f"{item} = scaled_splited['{item}']")
-    exec(f"print({item}.shape)")
-
 # ======== Neural Net ========
 model = BaselineNN(input_dim=num_fea)
 
-keras.utils.print_summary(model.model)
+keras.utils.print_summary(model.core)
 
 # Pass the scaled dataset into the model.
 model.fit(
@@ -43,7 +40,7 @@ model.fit(
     splited["y_train"],
     scaled_splited["X_val"],
     splited["y_val"],
-    epochs=100
+    epochs=3
 )
 
 pred = model.core.predict(
@@ -51,4 +48,4 @@ pred = model.core.predict(
     verbose=1
 )
 
-actual = y_scaler.inverse_transform(y_test)
+

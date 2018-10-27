@@ -30,11 +30,6 @@ num_fea = df.shape[1] - 1
 splited = split_data(e, target_col="TARGET")
 scaled_splited, X_scaler, y_scaler = standardize_data(splited)
 
-for item in splited.keys():
-    exec(f"{item} = scaled_splited['{item}']")
-    exec(f"print({item}.shape)")
-
-
 classifier = GradientBoostingClassifier(
     learning_rate=0.3,
     n_estimators=300,
