@@ -48,4 +48,9 @@ pred = model.core.predict(
     verbose=1
 )
 
-
+visualize_roc(
+    actual=splited["y_test"],
+    pred_prob=pred,
+    save_dir="./sample.html",
+    show=True
+)

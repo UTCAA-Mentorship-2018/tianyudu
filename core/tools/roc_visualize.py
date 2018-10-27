@@ -6,15 +6,15 @@ from core.data.data_proc import *
 import numpy as np
 import sklearn
 from sklearn import metrics
-import matplotlib
-import matplotlib.pyplot as plt
 import bokeh
+import bokeh.plotting
 
 
 def visualize_roc(
     actual: np.ndarray,
     pred_prob: np.ndarray,
-    save_dir: str=None
+    save_dir: str=None,
+    show: bool=False
 ) -> None:
     fpr, tpr, thresholds = metrics.roc_curve(
         y_true=actual,
@@ -23,7 +23,7 @@ def visualize_roc(
 
     roc_auc = metrics.auc(fpr, tpr)
 
-    plot = bokeh.plotting.figure(
+    p = bokeh.plotting.figure(
         title="Receiver operating characteristic",
         x_axis_label="False Positive Rate",
         y_axis_label="True Positive Rate",
@@ -31,17 +31,22 @@ def visualize_roc(
         y_range=(0.0, 1.0)
     )
 
-    plot.line(
+    p.line(
         fpr,tpr,
         color="red",
         alpha=0.7,
         legend=f"ROC Curve (AUC={roc_auc: 0.2f})"
     )
 
-    plt.plot(
+    p.line(
         [0, 1], [0, 1],
         color="navy", alpha=0.7
     )
 
-    bokeh.io.show(figure)
+    p.legend.location = "bottom_right"
 
+    if save_dir is not None:
+        bokeh.io.save(p, filename=save_dir)
+
+    if show:
+        bokeh.io.show(p)
