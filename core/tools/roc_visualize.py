@@ -10,7 +10,7 @@ import bokeh
 import bokeh.plotting
 
 
-def visualize_roc(
+def plot_roc(
     actual: np.ndarray,
     pred_prob: np.ndarray,
     save_dir: str=None,
