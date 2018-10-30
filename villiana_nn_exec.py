@@ -6,6 +6,8 @@ from core.models.baseline_nn import BaselineNN
 from core.tools.roc_visualize import visualize_roc
 import keras
 from constants import *
+from pprint import pprint
+from ui_control import *
 
 # ======== CONSTANTS ========
 
@@ -14,10 +16,14 @@ DROP_COLUMNS = []
 
 EXPERIMENT_NAME = input("experiment name >>> ")
 
+FILE_DIR = choose_dataset(SAVED_FILE_DIRS)
+
+EPOCHS = int(input("Model training epochs >>> "))
+
 # ======== END ========
 
 df = load_data(
-    file_dir=FILE_DIR_MAC,
+    file_dir=FILE_DIR,
     drop_threshold=DROP_THRESHOLD,
     drop_columns=DROP_COLUMNS)
 
@@ -39,7 +45,7 @@ model.fit(
     splited["y_train"],
     scaled_splited["X_val"],
     splited["y_val"],
-    epochs=3
+    epochs=EPOCHS
 )
 
 pred = model.core.predict(
