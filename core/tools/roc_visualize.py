@@ -37,7 +37,7 @@ def plot_roc(
     )
 
     p.line(
-        fpr,tpr,
+        fpr, tpr,
         color="red",
         alpha=0.7,
         legend=f"ROC Curve (AUC={roc_auc: 0.2f})"
@@ -55,3 +55,28 @@ def plot_roc(
 
     if show:
         bokeh.io.show(p)
+
+
+def matplot_plot_roc(
+    actual: np.ndarray,
+    pred_prob: np.ndarray
+) -> None:
+    fpr, tpr, thresholds = metrics.roc_curve(
+        acutal,
+        pred_prob
+    )
+
+    roc_auc = metrics.auc(fpr, tpr)
+
+    plt.figure()
+    lw = 2
+    plt.plot(
+        fpr, tpr, color="darkorange", lw=lw, label=f"ROC Curve (area = {roc_auc: 0.2f})")
+    plt.plot([0, 1], [0, 1], color="navy", lw=lw, linestyle="--")
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.0])
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title('Receiver operating characteristic')
+    plt.legend(loc="lower right")
+    plt.show()
