@@ -10,10 +10,10 @@ import bokeh
 import bokeh.plotting
 
 
-def plot_roc(
+def bokeh_roc(
     actual: np.ndarray,
     pred_prob: np.ndarray,
-    save_dir: str=None,
+    save_dir: str="./temp_roc.html",
     show: bool=False
 ) -> None:
     fpr, tpr, thresholds = metrics.roc_curve(
@@ -57,12 +57,12 @@ def plot_roc(
         bokeh.io.show(p)
 
 
-def matplot_plot_roc(
+def matplotlib_roc(
     actual: np.ndarray,
     pred_prob: np.ndarray
 ) -> None:
     fpr, tpr, thresholds = metrics.roc_curve(
-        acutal,
+        actual,
         pred_prob
     )
 
