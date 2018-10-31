@@ -9,4 +9,9 @@ SAVED_FILE_DIRS = {
     "CLOUD": None
 }
 
-
+PATH_EXTEND = [
+    "./core",
+    "./core/data/",
+    "./core/models/",
+    "./core/tools/"
+]

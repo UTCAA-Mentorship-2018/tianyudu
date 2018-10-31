@@ -2,6 +2,8 @@
 Methods in this file visualize the metrics to evaluate model
 using AUC of ROC.
 """
+import matplotlib
+import matplotlib.pyplot as plt
 from core.data.data_proc import *
 import numpy as np
 import sklearn
@@ -73,7 +75,7 @@ def matplotlib_roc(
     roc_auc = metrics.auc(fpr, tpr)
 
     plt.figure()
-    lw = 2
+    lw = 0.5
     plt.plot(
         fpr, tpr, color="darkorange", lw=lw, label=f"ROC Curve (area = {roc_auc: 0.2f})")
     plt.plot([0, 1], [0, 1], color="navy", lw=lw, linestyle="--")
@@ -88,3 +90,4 @@ def matplotlib_roc(
         plt.show()
     else:
         plt.savefig(file_dir)
+    plt.close()

@@ -1,7 +1,7 @@
 """
 GBM classifier.
 """
-
+import os
 import lightgbm as lgb
 import matplotlib
 import matplotlib.pyplot as plt
@@ -11,7 +11,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 
 from constants import *
 from core.data.data_proc import *
-from roc_visualize import *
+from core.tools.roc_visualize import *
 from ui_control import *
 
 
@@ -68,13 +68,18 @@ evals_result = dict()
 classifier = lgb.train(
     train_set=train_data,
     params=params,
-    num_boost_round=500,
+    num_boost_round=1000,
     valid_sets=[train_data, validation_data],
     evals_result=evals_result,
     verbose_eval=10
 )
 
 y_pred = classifier.predict(scaled_splited["X_test"])
+
+
+
+# ======== SAVE MODEL ========
+record_name = input("Record Name >>> ")
 model_dir = f"./saved_models/{record_name}"
 os.system(f"mkdir {model_dir}")
 
@@ -87,13 +92,16 @@ matplotlib_roc(
 
 lgb.plot_metric(booster=evals_result, metric="auc")
 plt.savefig(f"{model_dir}/auc_history.svg")
+plt.close()
 
 lgb.plot_metric(booster=evals_result, metric="binary_logloss")
 plt.savefig(f"{model_dir}/loss_history.svg")
+plt.close()
 
 lgb.plot_importance(classifier)
 plt.savefig(f"{model_dir}/importance.svg")
+plt.close()
 
-classifier.save_model(file_name=f"{model_dir}/bgm.txt")
+classifier.save_model(f"{model_dir}/bgm.txt")
 
 # lgb.Booster(model_file='model.txt')
