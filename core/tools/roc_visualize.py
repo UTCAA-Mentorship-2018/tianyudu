@@ -59,8 +59,12 @@ def bokeh_roc(
 
 def matplotlib_roc(
     actual: np.ndarray,
-    pred_prob: np.ndarray
+    pred_prob: np.ndarray,
+    file_dir: str=None,
+    show: bool=False
 ) -> None:
+    assert file_dir is not None or show
+    
     fpr, tpr, thresholds = metrics.roc_curve(
         actual,
         pred_prob
@@ -79,4 +83,8 @@ def matplotlib_roc(
     plt.ylabel("True Positive Rate")
     plt.title('Receiver operating characteristic')
     plt.legend(loc="lower right")
-    plt.show()
+    
+    if show:
+        plt.show()
+    else:
+        plt.savefig(file_dir)

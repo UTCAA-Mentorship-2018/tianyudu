@@ -8,3 +8,5 @@ SAVED_FILE_DIRS = {
     "EC2": "/home/ec2-user/environment/mentor_2018/data/application_train.csv",
     "CLOUD": None
 }
+
+

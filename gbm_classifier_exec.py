@@ -1,17 +1,19 @@
 """
 GBM classifier.
 """
+
+import lightgbm as lgb
 import matplotlib
 import matplotlib.pyplot as plt
 import sklearn
-from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
+from sklearn.ensemble import GradientBoostingClassifier
 
-from core.data.data_proc import *
 from constants import *
+from core.data.data_proc import *
+from roc_visualize import *
 from ui_control import *
 
-import lightgbm as lgb
 
 DROP_THRESHOLD = 0.1
 DROP_COLUMNS = []
@@ -23,7 +25,9 @@ df = load_data(
     drop_threshold=DROP_THRESHOLD,
     drop_columns=DROP_COLUMNS)
 
-values = df.values
+df.drop(columns=["SK_ID_CURR"], inplace=True)
+
+X, y = df.drop(columns=["TARGET"]), df["TARGET"]
 
 e, encoders = int_encode_data(df)
 
@@ -32,46 +36,64 @@ num_fea = df.shape[1] - 1
 splited = split_data(e, target_col="TARGET")
 scaled_splited, X_scaler, y_scaler = standardize_data(splited)
 
-d_train = lgb.Dataset(scaled_splited["X_train"], label=splited["y_train"])
+# ======== GBM Setup ========
 
-params = {}
-params['learning_rate'] = 0.003
-params['boosting_type'] = 'gbdt'
-params['objective'] = 'binary'
-params['metric'] = 'binary_logloss'
-params['sub_feature'] = 0.5
-params['num_leaves'] = 32
-params['min_data'] = 50
-params['max_depth'] = 25
+train_data = lgb.Dataset(
+    scaled_splited["X_train"],
+    label=splited["y_train"],
+    feature_name=list(X.columns.astype(str))
+)
 
-clf = lgb.train(params, d_train, 30)
+validation_data = lgb.Dataset(
+    scaled_splited["X_val"],
+    label=splited["y_val"],
+    reference=train_data,
+    feature_name=list(X.columns.astype(str))
+)
 
-y_pred = clf.predict(scaled_splited["X_test"])
+params = {
+    "learning_rate": 0.01,
+    "boosting_type": "gbdt",
+    "objective": "binary",
+    "metric": ["binary_logloss", "auc"],
+    "sub_feature": 0.5,
+    "num_leaves": 64,
+    "min_data": 50,
+    "max_depth": 25,
+    "max_bin": 512
+}
 
-plot_roc(
+evals_result = dict()
+
+classifier = lgb.train(
+    train_set=train_data,
+    params=params,
+    num_boost_round=500,
+    valid_sets=[train_data, validation_data],
+    evals_result=evals_result,
+    verbose_eval=10
+)
+
+y_pred = classifier.predict(scaled_splited["X_test"])
+model_dir = f"./saved_models/{record_name}"
+os.system(f"mkdir {model_dir}")
+
+matplotlib_roc(
     actual=splited["y_test"],
     pred_prob=y_pred,
-    save_dir="./test.html",
-    show=True
+    show=False,
+    file_dir=f"{model_dir}/roc.svg"
 )
 
-fpr, tpr, thresholds = metrics.roc_curve(
-    splited["y_test"],
-    y_pred
-)
+lgb.plot_metric(booster=evals_result, metric="auc")
+plt.savefig(f"{model_dir}/auc_history.svg")
 
+lgb.plot_metric(booster=evals_result, metric="binary_logloss")
+plt.savefig(f"{model_dir}/loss_history.svg")
 
-roc_auc = metrics.auc(fpr, tpr)
+lgb.plot_importance(classifier)
+plt.savefig(f"{model_dir}/importance.svg")
 
-plt.figure()
-lw = 2
-plt.plot(
-    fpr, tpr, color="darkorange", lw=lw, label=f"ROC Curve (area = {roc_auc: 0.2f})")
-plt.plot([0, 1], [0, 1], color="navy", lw=lw, linestyle="--")
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.0])
-plt.xlabel("False Positive Rate")
-plt.ylabel("True Positive Rate")
-plt.title('Receiver operating characteristic')
-plt.legend(loc="lower right")
-plt.show()
+classifier.save_model(file_name=f"{model_dir}/bgm.txt")
+
+# lgb.Booster(model_file='model.txt')
