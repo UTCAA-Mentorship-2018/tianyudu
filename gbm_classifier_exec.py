@@ -65,10 +65,11 @@ params = {
 
 evals_result = dict()
 
+nbr = int(input("Number of boosting rounds >>> "))
 classifier = lgb.train(
     train_set=train_data,
     params=params,
-    num_boost_round=1000,
+    num_boost_round=nbr,
     valid_sets=[train_data, validation_data],
     evals_result=evals_result,
     verbose_eval=10
@@ -83,6 +84,7 @@ record_name = input("Record Name >>> ")
 model_dir = f"./saved_models/{record_name}"
 os.system(f"mkdir {model_dir}")
 
+print("Saving ROC plot...")
 matplotlib_roc(
     actual=splited["y_test"],
     pred_prob=y_pred,
@@ -90,18 +92,22 @@ matplotlib_roc(
     file_dir=f"{model_dir}/roc.svg"
 )
 
+print("Saving AUC training history...")
 lgb.plot_metric(booster=evals_result, metric="auc")
 plt.savefig(f"{model_dir}/auc_history.svg")
 plt.close()
 
+print("Saving loss history...")
 lgb.plot_metric(booster=evals_result, metric="binary_logloss")
 plt.savefig(f"{model_dir}/loss_history.svg")
 plt.close()
 
+print("Saving importance plot...")
 lgb.plot_importance(classifier)
 plt.savefig(f"{model_dir}/importance.svg")
 plt.close()
 
+print("Saving model")
 classifier.save_model(f"{model_dir}/bgm.txt")
 
 # lgb.Booster(model_file='model.txt')
