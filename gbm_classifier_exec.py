@@ -107,7 +107,7 @@ lgb.plot_importance(classifier)
 plt.savefig(f"{model_dir}/importance.svg")
 plt.close()
 
-print("Saving model")
+print("Saving model...")
 classifier.save_model(f"{model_dir}/bgm.txt")
 
 # lgb.Booster(model_file='model.txt')
