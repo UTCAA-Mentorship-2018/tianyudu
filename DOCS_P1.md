@@ -1,6 +1,6 @@
 # Home Credit Default Risk
 
-## Models and Methods
+## Phase 1: Light Gradient Boosting Machine
 
 The central task of this project is a *binary classification problem*. In our basic model, only features from `application_train.csv`  are used.
 
@@ -10,7 +10,9 @@ Detailed statistics on the dataset can be explored in `./explore_data.ipynb`
 
 
 
-### Data Pre-processing i: Dropping the Data
+### Data Pre-Processing
+
+#### i) Dropping Invalid Data
 
 `ID` and `TARGET` are excluded from training features.
 
@@ -18,11 +20,9 @@ Many of columns involves invalid observations (marked as `nan` or empty). In our
 
 We set the threshold to be 10% in our model. (i.e. any features containing more than 10% invalid observations will be excluded from our model.)
 
+#### ii) Encoding Data
 
+#### iii) Splitting Training, Testing and Validation sets
 
-### Data Pre-processing ii: Encoding Data
-
-### Data Pre-processing iii: Training, Testing and Validation sets.
-
-### Model 1. Light Gradient Boosting Machine
+#### iv) Standardization
 
