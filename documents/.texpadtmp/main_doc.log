@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  2 NOV 2018 20:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  3 NOV 2018 16:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -591,6 +591,15 @@ Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
 ) (/usr/local/texlive/2016/texmf-dist/tex/latex/chngcntr/chngcntr.sty
 Package: chngcntr 2009/09/02 v1.0a change counter resetting
+) (/usr/local/texlive/2016/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2008/02/07
+ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix <2008/02/07> (tvz)
+\FV@CodeLineNo=\count122
+\FV@InFile=\read1
+\FV@TabBox=\box30
+\c@FancyVerbLine=\count123
+\FV@StepNumber=\count124
+\FV@OutFile=\write3
 ) (/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/tianyudu/documents/.texpadtmp/main_doc.aux)
 \openout1 = `main_doc.aux'.
 
@@ -610,16 +619,16 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 17.
 LaTeX Font Info:    ... okay on input line 17.
  (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count122
+\scratchcounter=\count125
 \scratchdimen=\dimen122
-\scratchbox=\box30
-\nofMPsegments=\count123
-\nofMParguments=\count124
+\scratchbox=\box31
+\nofMPsegments=\count126
+\nofMParguments=\count127
 \everyMPshowfont=\toks35
-\MPscratchCnt=\count125
+\MPscratchCnt=\count128
 \MPscratchDim=\dimen123
-\MPnumerator=\count126
-\makeMPintoPDFobject=\count127
+\MPnumerator=\count129
+\makeMPintoPDFobject=\count130
 \everyMPtoPDFconversion=\toks36
 ) (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -632,21 +641,21 @@ Package grfext Info: Graphics extension search list:
  (/usr/local/texlive/2016/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-\AtBeginShipoutBox=\box31
+\AtBeginShipoutBox=\box32
 Package hyperref Info: Link coloring OFF on input line 17.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
  (/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count128
+\c@section@level=\count131
 )
 LaTeX Info: Redefining \ref on input line 17.
 LaTeX Info: Redefining \pageref on input line 17.
 LaTeX Info: Redefining \nameref on input line 17.
  (/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/tianyudu/documents/.texpadtmp/main_doc.out) (/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/tianyudu/documents/.texpadtmp/main_doc.out)
-\@outlinefile=\write3
-\openout3 = `main_doc.out'.
+\@outlinefile=\write4
+\openout4 = `main_doc.out'.
 
 LaTeX Font Info:    Try loading font information for U+msa on input line 19.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -656,35 +665,40 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 19.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/tianyudu/documents/.texpadtmp/main_doc.toc)
-\tf@toc=\write4
-\openout4 = `main_doc.toc'.
+\tf@toc=\write5
+\openout5 = `main_doc.toc'.
 
  [1
 
-{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 64.
- [3]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 64.
+{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (6.1959pt too wide) in paragraph at lines 27--28
+[][]\OT1/cmr/bx/n/10 Notation 1.1. []\OT1/cmr/m/n/10 Each row of raw dataset rep-re-sents one sin-gle \OT1/cmr/m/it/10 ob-ser-va-tion\OT1/cmr/m/n/10 (sample)
+ []
+
+[2]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 101.
+ [3] [4]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 101.
  (/Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/tianyudu/documents/.texpadtmp/main_doc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 64.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 64.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 101.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 101.
 Package rerunfilecheck Info: File `main_doc.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 64.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 101.
  ) 
 Here is how much of TeX's memory you used:
- 7470 strings out of 493014
- 104314 string characters out of 6133351
- 204614 words of memory out of 5000000
- 10881 multiletter control sequences out of 15000+600000
+ 7847 strings out of 493014
+ 110184 string characters out of 6133351
+ 213076 words of memory out of 5000000
+ 11245 multiletter control sequences out of 15000+600000
  12330 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,6n,35p,430b,351s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,7n,35p,397b,337s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on /Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/tianyudu/documents/.texpadtmp/main_doc.pdf (3 pages, 129870 bytes).
+Output written on /Users/tianyudu/Documents/Activities/UTCAA-Mentorship-2018/tianyudu/documents/.texpadtmp/main_doc.pdf (4 pages, 140658 bytes).
 PDF statistics:
- 112 PDF objects out of 1000 (max. 8388607)
- 95 compressed objects within 1 object stream
- 22 named destinations out of 1000 (max. 500000)
- 49 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 135 PDF objects out of 1000 (max. 8388607)
+ 116 compressed objects within 2 object streams
+ 31 named destinations out of 1000 (max. 500000)
+ 65 words of extra memory for PDF output out of 10000 (max. 10000000)
 
