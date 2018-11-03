@@ -1,0 +1,14 @@
+\select@language {english}
+\contentsline {paragraph}{Last update}{1}{section*.1}
+\contentsline {section}{\numberline {1}Light Gradient Boosting Machine}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Data Preprocessing}{2}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}Dropping Invalid Data}{2}{subsubsection.1.1.1}
+\contentsline {paragraph}{Basic}{2}{section*.4}
+\contentsline {paragraph}{Dropping Invalid Features}{2}{section*.5}
+\contentsline {paragraph}{Dropping Specific Columns}{2}{section*.6}
+\contentsline {subsubsection}{\numberline {1.1.2}Encoding Categorical Features}{2}{subsubsection.1.1.2}
+\contentsline {subsubsection}{\numberline {1.1.3}Splitting Training, Testing and Validation Sets}{2}{subsubsection.1.1.3}
+\contentsline {subsubsection}{\numberline {1.1.4}Scaling Data}{2}{subsubsection.1.1.4}
+\contentsline {paragraph}{}{2}{section*.7}
+\contentsline {paragraph}{Normalization.}{2}{section*.8}
+\contentsline {paragraph}{Standardization.}{3}{section*.9}
