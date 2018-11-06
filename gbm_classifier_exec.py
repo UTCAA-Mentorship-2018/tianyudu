@@ -9,6 +9,7 @@ import sklearn
 from sklearn import metrics
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 from constants import *
 from core.data.data_proc import *
@@ -32,22 +33,33 @@ X, y = df.drop(columns=["TARGET"]), df["TARGET"]
 
 e, encoders = int_encode_data(X)
 
-num_fea = X.shape[1]
+# splited = split_data(e, target_col="TARGET")
 
-splited = split_data(e, target_col="TARGET")
-scaled_splited, X_scaler, y_scaler = standardize_data(splited)
+X_train, X_test, y_train, y_test = train_test_split(e, y, test_size=0.2)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25)
+
+print(f"Training set: {X_train.shape}, {y_train.shape}\
+\nTesting set: {X_test.shape}, {y_test.shape}\
+\nValidation set: {X_val.shape}, {y_val.shape}"
+)
+
+scaler = StandardScaler().fit(X_train)
+
+scaled_X_train = scaler.transform(X_train)
+scaled_X_val = scaler.transform(X_val)
+scaled_X_test = scaler.transform(X_test)
 
 # ======== GBM Setup ========
 
 train_data = lgb.Dataset(
-    scaled_splited["X_train"],
-    label=splited["y_train"],
+    scaled_X_train,
+    label=y_train,
     feature_name=list(X.columns.astype(str))
 )
 
 validation_data = lgb.Dataset(
-    scaled_splited["X_val"],
-    label=splited["y_val"],
+    scaled_X_val,
+    label=y_val,
     reference=train_data,
     feature_name=list(X.columns.astype(str))
 )
