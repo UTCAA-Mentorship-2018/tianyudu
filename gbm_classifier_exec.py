@@ -33,8 +33,6 @@ X, y = df.drop(columns=["TARGET"]), df["TARGET"]
 
 e, encoders = int_encode_data(X)
 
-# splited = split_data(e, target_col="TARGET")
-
 X_train, X_test, y_train, y_test = train_test_split(e, y, test_size=0.2)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25)
 
@@ -88,7 +86,7 @@ classifier = lgb.train(
     verbose_eval=10
 )
 
-y_pred = classifier.predict(scaled_splited["X_test"])
+y_pred = classifier.predict(scaled_X_test)
 
 fea_imp = np.stack(
     [classifier.feature_name(), classifier.feature_importance()], axis=1)
@@ -107,7 +105,7 @@ np.savetxt(f"{model_dir}/importance.csv", srt_fea_imp, fmt="%s,%s")
 
 print("Saving ROC plot...")
 matplotlib_roc(
-    actual=splited["y_test"],
+    actual=y_test,
     pred_prob=y_pred,
     show=False,
     file_dir=f"{model_dir}/roc.svg"
