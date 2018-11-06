@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import sklearn
 from sklearn import metrics
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.model_selection import train_test_split
 
 from constants import *
 from core.data.data_proc import *
@@ -27,13 +28,11 @@ df = load_data(
 
 df.drop(columns=["SK_ID_CURR"], inplace=True)
 
-selected_features1.append("TARGET")
-
 X, y = df.drop(columns=["TARGET"]), df["TARGET"]
 
 e, encoders = int_encode_data(X)
 
-num_fea = df.shape[1] - 1
+num_fea = X.shape[1]
 
 splited = split_data(e, target_col="TARGET")
 scaled_splited, X_scaler, y_scaler = standardize_data(splited)
