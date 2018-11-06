@@ -2,12 +2,13 @@
 GBM classifier.
 """
 import os
-import lightgbm as lgb
 import matplotlib
 import matplotlib.pyplot as plt
 import sklearn
 from sklearn import metrics
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 from constants import *
 from core.data.data_proc import *
@@ -27,64 +28,59 @@ df = load_data(
 
 df.drop(columns=["SK_ID_CURR"], inplace=True)
 
-selected_features1.append("TARGET")
-
 X, y = df.drop(columns=["TARGET"]), df["TARGET"]
 
 e, encoders = int_encode_data(X)
 
 num_fea = df.shape[1] - 1
 
-splited = split_data(e, target_col="TARGET")
-scaled_splited, X_scaler, y_scaler = standardize_data(splited)
+X_train, X_test, y_train, y_test = train_test_split(
+    e,
+    y,
+    test_size=0.2,
+    shuffle=False
+)
+
+X_scaler = StandardScaler()
+X_scaler.fit(X_train)
+
+# X_train, X_val, y_train, y_val = train_test_split(
+#     X_train,
+#     y_train,
+#     test_size=0.25,
+#     shuffle=True
+# )
+
+# print(f"Training set: {X_train.shape}, {y_train.shape}\
+# \nTesting set: {X_test.shape}, {y_test.shape}\
+# \nValidation set: {X_val.shape}, {y_val.shape}")
+
+print(f"Training set: {X_train.shape}, {y_train.shape}\
+\nTesting set: {X_test.shape}, {y_test.shape}")
 
 # ======== GBM Setup ========
+ROUNDS = int(input("Number of boosting rounds >>> "))
 
-train_data = lgb.Dataset(
-    scaled_splited["X_train"],
-    label=splited["y_train"],
-    feature_name=list(X.columns.astype(str))
+clf = GradientBoostingClassifier(
+    n_estimators=100,
+    verbose=1
 )
 
-validation_data = lgb.Dataset(
-    scaled_splited["X_val"],
-    label=splited["y_val"],
-    reference=train_data,
-    feature_name=list(X.columns.astype(str))
+clf.fit(
+    X_train,
+    y_train.values
 )
 
-params = {
-    "learning_rate": 0.03,
-    "boosting_type": "gbdt",
-    "objective": "binary",
-    "metric": ["binary_logloss", "auc"],
-    "sub_feature": 0.5,
-    "num_leaves": 64,
-    "min_data": 50,
-    "max_depth": 25,
-    "max_bin": 512
-}
-
-evals_result = dict()
-
-nbr = int(input("Number of boosting rounds >>> "))
-classifier = lgb.train(
-    train_set=train_data,
-    params=params,
-    num_boost_round=nbr,
-    valid_sets=[train_data, validation_data],
-    evals_result=evals_result,
-    verbose_eval=10
+y_pred = clf.predict_proba(
+    X_test
 )
 
-y_pred = classifier.predict(scaled_splited["X_test"])
+# fea_imp = np.stack(
+#     [classifier.feature_name(), classifier.feature_importance()], axis=1)
 
-fea_imp = np.stack(
-    [classifier.feature_name(), classifier.feature_importance()], axis=1)
-
-srt_fea_imp = np.array(
-    sorted([x for x in fea_imp], key=lambda x: -float(x[1]))
-)
+# srt_fea_imp = np.array(
+#     sorted([x for x in fea_imp], key=lambda x: -float(x[1]))
+# )
 
 # ======== SAVE MODEL ========
 record_name = input("Record Name >>> ")
@@ -96,10 +92,10 @@ np.savetxt(f"{model_dir}/importance.csv", srt_fea_imp, fmt="%s,%s")
 
 print("Saving ROC plot...")
 matplotlib_roc(
-    actual=splited["y_test"],
-    pred_prob=y_pred,
-    show=False,
-    file_dir=f"{model_dir}/roc.svg"
+    actual=y_test,
+    pred_prob=y_pred[:, 1],
+    show=True,
+    file_dir=None
 )
 
 print("Saving AUC training history...")
