@@ -14,6 +14,7 @@ from core.data.data_proc import *
 from core.tools.roc_visualize import *
 from ui_control import *
 
+from feature import *
 
 DROP_THRESHOLD = 0.1
 DROP_COLUMNS = []
@@ -26,6 +27,8 @@ df = load_data(
     drop_columns=DROP_COLUMNS)
 
 df.drop(columns=["SK_ID_CURR"], inplace=True)
+
+selected_features1.append("TARGET")
 
 X, y = df.drop(columns=["TARGET"]), df["TARGET"]
 
@@ -52,7 +55,7 @@ validation_data = lgb.Dataset(
 )
 
 params = {
-    "learning_rate": 0.01,
+    "learning_rate": 0.03,
     "boosting_type": "gbdt",
     "objective": "binary",
     "metric": ["binary_logloss", "auc"],
@@ -77,12 +80,20 @@ classifier = lgb.train(
 
 y_pred = classifier.predict(scaled_splited["X_test"])
 
+fea_imp = np.stack(
+    [classifier.feature_name(), classifier.feature_importance()], axis=1)
 
+srt_fea_imp = np.array(
+    sorted([x for x in fea_imp], key=lambda x: -float(x[1]))
+)
 
 # ======== SAVE MODEL ========
 record_name = input("Record Name >>> ")
 model_dir = f"./saved_models/{record_name}"
 os.system(f"mkdir {model_dir}")
+
+print("Saving Feature Importances...")
+np.savetxt(f"{model_dir}/importance.csv", srt_fea_imp, fmt="%s,%s")
 
 print("Saving ROC plot...")
 matplotlib_roc(
