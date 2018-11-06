@@ -41,56 +41,41 @@ X_train, X_test, y_train, y_test = train_test_split(
     shuffle=False
 )
 
+X_train, X_val, y_train, y_val = train_test_split(
+    X_train,
+    y_train,
+    test_size=0.25,
+    shuffle=True
+)
+
 X_scaler = StandardScaler()
 X_scaler.fit(X_train)
 
-# X_train, X_val, y_train, y_val = train_test_split(
-#     X_train,
-#     y_train,
-#     test_size=0.25,
-#     shuffle=True
-# )
-
-# print(f"Training set: {X_train.shape}, {y_train.shape}\
-# \nTesting set: {X_test.shape}, {y_test.shape}\
-# \nValidation set: {X_val.shape}, {y_val.shape}")
-
 print(f"Training set: {X_train.shape}, {y_train.shape}\
-\nTesting set: {X_test.shape}, {y_test.shape}")
+\nTesting set: {X_test.shape}, {y_test.shape}\
+\nValidation set: {X_val.shape}, {y_val.shape}")
 
 # ======== GBM Setup ========
-ROUNDS = int(input("Number of boosting rounds >>> "))
+# ROUNDS = int(input("Number of boosting rounds >>> "))
 
 clf = GradientBoostingClassifier(
-    n_estimators=100,
-    verbose=1
+    n_estimators=300,
+    verbose=1,
+    validation_fraction=0.1,
+    n_iter_no_change=10
 )
 
 clf.fit(
-    X_train,
-    y_train.values
+    X_scaler.transform(X_train),
+    y_train
 )
 
 y_pred = clf.predict_proba(
-    X_test
+    X_scaler.transform(X_test)
 )
 
-# fea_imp = np.stack(
-#     [classifier.feature_name(), classifier.feature_importance()], axis=1)
+# ======== Present Result ========
 
-# srt_fea_imp = np.array(
-#     sorted([x for x in fea_imp], key=lambda x: -float(x[1]))
-# )
-
-# ======== SAVE MODEL ========
-record_name = input("Record Name >>> ")
-model_dir = f"./saved_models/{record_name}"
-os.system(f"mkdir {model_dir}")
-
-print("Saving Feature Importances...")
-np.savetxt(f"{model_dir}/importance.csv", srt_fea_imp, fmt="%s,%s")
-
-print("Saving ROC plot...")
 matplotlib_roc(
     actual=y_test,
     pred_prob=y_pred[:, 1],
@@ -98,22 +83,3 @@ matplotlib_roc(
     file_dir=None
 )
 
-print("Saving AUC training history...")
-lgb.plot_metric(booster=evals_result, metric="auc")
-plt.savefig(f"{model_dir}/auc_history.svg")
-plt.close()
-
-print("Saving loss history...")
-lgb.plot_metric(booster=evals_result, metric="binary_logloss")
-plt.savefig(f"{model_dir}/loss_history.svg")
-plt.close()
-
-print("Saving importance plot...")
-lgb.plot_importance(classifier)
-plt.savefig(f"{model_dir}/importance.svg")
-plt.close()
-
-print("Saving model...")
-classifier.save_model(f"{model_dir}/bgm.txt")
-
-# lgb.Booster(model_file='model.txt')
